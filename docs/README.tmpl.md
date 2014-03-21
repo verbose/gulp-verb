@@ -1,7 +1,6 @@
+# {%= name %} {%= badge('fury') %}
 
-# {%= name %}
-
-> verb plugin for [gulp](https://github.com/wearefractal/gulp)
+> [gulp](https://github.com/wearefractal/gulp) plugin for [Verb](https://github.com/assemble/verb)
 
 ## Usage
 
@@ -21,18 +20,13 @@ gulp.src("./docs/README.tmpl.md")
   .pipe(gulp.dest("./README.md"));
 ```
 
+## Author
+{%= contrib("brian") %}
+
 ## License
+{%= copyright() %}
+{%= license() %}
 
-[MIT License](http://en.wikipedia.org/wiki/MIT_License)
+***
 
-[npm-url]: https://npmjs.org/package/{%= name %}
-[npm-image]: https://badge.fury.io/js/{%= name %}.png
-
-[travis-url]: http://travis-ci.org/assemble/{%= name %}
-[travis-image]: https://secure.travis-ci.org/assemble/{%= name %}.png?branch=master
-
-[coveralls-url]: https://coveralls.io/r/assemble/{%= name %}
-[coveralls-image]: https://coveralls.io/repos/assemble/{%= name %}/badge.png
-
-[depstat-url]: https://david-dm.org/assemble/{%= name %}
-[depstat-image]: https://david-dm.org/assemble/{%= name %}.png
+{%= include("footer") %}
