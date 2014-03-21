@@ -1,7 +1,5 @@
-(PLUGIN AUTHOR: Please read [Plugin README conventions](https://github.com/wearefractal/gulp/wiki/Plugin-README-Conventions), then delete this line)
-
 # gulp-verb
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency Status][depstat-image]][depstat-url]
+[![NPM version][npm-image}}[npm-url] [![Build Status][travis-image}}[travis-url]  [![Coverage Status][coveralls-image}}[coveralls-url] [![Dependency Status][depstat-image}}[depstat-url]
 
 > verb plugin for [gulp](https://github.com/wearefractal/gulp)
 
@@ -18,23 +16,10 @@ Then, add it to your `gulpfile.js`:
 ```javascript
 var verb = require("gulp-verb");
 
-gulp.src("./src/*.ext")
-	.pipe(verb({
-		msg: "Hello Gulp!"
-	}))
-	.pipe(gulp.dest("./dist"));
+gulp.src("./docs/README.tmpl.md")
+  .pipe(verb({}))
+  .pipe(gulp.dest("./README.md"));
 ```
-
-## API
-
-### verb(options)
-
-#### options.msg
-Type: `String`  
-Default: `Hello World`
-
-The message you wish to attach to file.
-
 
 ## License
 
