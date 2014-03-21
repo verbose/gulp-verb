@@ -1,7 +1,5 @@
 # gulp-verb
 
-[![NPM version][npm-image][npm-url] [![Build Status][travis-image][travis-url]  [![Coverage Status][coveralls-image][coveralls-url] [![Dependency Status][depstat-image][depstat-url]
-
 > verb plugin for [gulp](https://github.com/wearefractal/gulp)
 
 ## Usage
