@@ -1,50 +1,59 @@
-var through = require("through2");
+var path = require('path');
+var Stream = require("stream");
 var gutil = require("gulp-util");
 var verb = require('verb');
+var _ = require('lodash');
+
+var pkg = require(path.join(__dirname, 'package.json'));
+verb.runner = {
+  name: pkg.name,
+  url: pkg.homepage
+};
+
+var stream = new Stream.Transform({objectMode: true});
 
 module.exports = function (options) {
-	"use strict";
+  "use strict";
 
-	// if necessary check for required options
-	if (!options) {
-		throw new gutil.PluginError("gulp-verb", "No options supplied");
-	}
+  options = _.extend({data: ['docs/*.{json,yml}']}, options);
 
-	// see "Writing a plugin"
-	// https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md
-	function plugin(file, enc, callback) {
-		/*jshint validthis:true*/
+  // Check for required options
+  if (!options) {
+    throw new gutil.PluginError("gulp-verb", "No options supplied");
+  }
 
-		// Do nothing if no contents
-		if (file.isNull()) {
-			this.push(file);
-			return callback();
-		}
+  verb.options = _.extend(verb.options || {}, options);
 
-		if (file.isStream()) {
+  stream._transform = function(file, enc, callback) {
+    // Do nothing if no contents
+    if (file.isNull()) {
+      this.push(file);
+      return callback();
+    }
 
-			// http://nodejs.org/api/stream.html
-			// http://nodejs.org/api/child_process.html
-			// https://github.com/dominictarr/event-stream
+    if (file.isStream()) {
+      this.emit("error", new gutil.PluginError("gulp-verb", "Stream content is not supported"));
+      return callback();
+    }
 
-			// accepting streams is optional
-			this.emit("error",
-				new gutil.PluginError("gulp-verb", "Stream content is not supported"));
-			return callback();
-		}
+    // check if file.contents is a `Buffer`
+    if (file.isBuffer()) {
+      var page = verb.process(String(file.contents), verb.options);
 
-		// check if file.contents is a `Buffer`
-		if (file.isBuffer()) {
+      // Extend the context
+      var context = _.extend({}, verb.options, options, {
+        data: options.data
+      }, page.context);
 
-			// manipulate buffer in some way
-			// http://nodejs.org/api/buffer.html
-			file.contents = new Buffer(verb.process(String(file.contents), options).content);
+      file.contents = new Buffer(page.content);
 
-			this.push(file);
+      if (context.dest) {
+        file.path = path.join(file.base, context.dest);
+      }
+      this.push(file);
+    }
+    return callback(null, file);
+  }
 
-		}
-		return callback();
-	}
-
-	return through.obj(plugin);
+  return stream;
 };
