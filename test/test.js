@@ -22,7 +22,6 @@ describe("gulp-verb", function () {
 	});
 
 	it("should produce expected file via buffer", function (done) {
-
 		var srcFile = new gutil.File({
 			path: "test/fixtures/README.tmpl.md",
 			cwd: "test/",
@@ -38,10 +37,8 @@ describe("gulp-verb", function () {
 		});
 
 		stream.on("data", function (newFile) {
-
 			should.exist(newFile);
 			should.exist(newFile.contents);
-
 			String(newFile.contents).should.equal(String(expectedFile.contents));
 			done();
 		});
