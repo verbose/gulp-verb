@@ -1,1 +1,1 @@
-Foo
+{%= author.name %}

@@ -52,7 +52,7 @@ module.exports = function (options) {
       }
       this.push(file);
     }
-    return callback(null, file);
+    return callback(null);
   }
 
   return stream;
