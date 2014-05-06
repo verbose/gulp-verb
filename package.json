@@ -1,6 +1,6 @@
 {
   "name": "gulp-verb",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Gulp plugin for Verb, the zero-configuration markdown docs generator for Node.js.",
   "author": {
     "name": "Brian Woodward",
