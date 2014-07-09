@@ -1,11 +1,21 @@
 {
   "name": "gulp-verb",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Gulp plugin for Verb, the zero-configuration markdown docs generator for Node.js.",
   "author": {
     "name": "Brian Woodward",
     "url": "https://github.com/doowb"
   },
+  "maintainers": [
+    {
+      "name": "Brian Woodward",
+      "url": "https://github.com/doowb"
+    },
+    {
+      "name": "Jon Schlinkert",
+      "url": "https://github.com/jonschlinkert"
+    }
+  ],
   "homepage": "https://github.com/assemble/gulp-verb",
   "repository": {
     "type": "git",
@@ -21,8 +31,7 @@
     }
   ],
   "scripts": {
-    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "mocha -R spec"
   },
   "engines": {
     "node": ">=0.10.0",
@@ -33,19 +42,20 @@
     "documentation",
     "gulpplugin",
     "markdown",
+    "generate",
     "verb"
   ],
   "dependencies": {
+    "gray-matter": "^0.4.2",
     "gulp-util": "^2.2.14",
     "lodash": "^2.4.1",
+    "through2": "^0.5.1",
     "verb": "^0.2.6"
   },
   "devDependencies": {
-    "coveralls": "^2.10.0",
     "event-stream": "^3.1.5",
-    "istanbul": "^0.2.8",
+    "gulp": "^3.8.5",
     "mocha": "^1.18.2",
-    "mocha-lcov-reporter": "0.0.1",
     "should": "^3.3.1"
   }
 }

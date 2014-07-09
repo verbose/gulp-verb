@@ -1,6 +1,9 @@
+'use strict';
+
 var path = require('path');
-var Stream = require("stream");
-var gutil = require("gulp-util");
+var through = require('through2');
+var gutil = require('gulp-util');
+var matter = require('gray-matter');
 var verb = require('verb');
 var _ = require('lodash');
 
@@ -10,50 +13,35 @@ verb.runner = {
   url: pkg.homepage
 };
 
-var stream = new Stream.Transform({objectMode: true});
-
 module.exports = function (options) {
-  "use strict";
-
-  options = _.extend({data: ['docs/*.{json,yml}']}, options);
-
-  // Check for required options
-  if (!options) {
-    throw new gutil.PluginError("gulp-verb", "No options supplied");
-  }
-
-  verb.options = _.extend(verb.options || {}, options);
-
-  stream._transform = function(file, enc, callback) {
-    // Do nothing if no contents
+  return through.obj(function(file, enc, callback) {
     if (file.isNull()) {
       this.push(file);
       return callback();
     }
-
     if (file.isStream()) {
-      this.emit("error", new gutil.PluginError("gulp-verb", "Stream content is not supported"));
+      this.emit('error', new gutil.PluginError('gulp-verb', 'Streaming not supported'));
       return callback();
     }
 
-    // check if file.contents is a `Buffer`
-    if (file.isBuffer()) {
-      var page = verb.process(String(file.contents), verb.options);
+    try {
+      var opts = _.extend({}, {data: ['docs/*.{json,yml}']}, options);
+      var obj = matter(file.contents.toString('utf8'));
 
       // Extend the context
-      var context = _.extend({}, verb.options, options, {
-        data: options.data
-      }, page.context);
+      var ctx = _.extend({}, opts, {data: opts.data}, obj.data);
+      var page = verb.process(String(file.contents), ctx);
 
       file.contents = new Buffer(page.content);
 
-      if (context.dest) {
-        file.path = path.join(file.base, context.dest);
+      if (ctx.dest) {
+        file.path = path.join(file.base, ctx.dest);
       }
-      this.push(file);
+    } catch (err) {
+      this.emit('error', new gutil.PluginError('gulp-verb', err));
     }
-    return callback(null);
-  }
 
-  return stream;
+    this.push(file);
+    callback();
+  });
 };
